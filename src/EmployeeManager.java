@@ -101,9 +101,15 @@ public class EmployeeManager {
      */
     public void removeEmployee(int id) {
         // TODO: Find the employee by ID
+        Employee e = employeeMap.get(id);
         // TODO: If not found, throw IllegalArgumentException with message:
+        if(e == null){
+            throw new IllegalArgumentException("Employee with this "+ id + "not found.");
+        }
         //       "Employee with ID <id> not found"
         // TODO: Remove from both the list and the map
+        employeeMap.remove(id);
+        employees.remove(e);
     }
 
     /**
@@ -117,13 +123,30 @@ public class EmployeeManager {
      * @throws IllegalArgumentException if no employee with that ID exists
      * @throws IllegalArgumentException if the employee is already a Manager
      */
-//    public Manager promoteToManager(int id, int teamSize) {
-//        // TODO: Find the employee by ID (throw if not found)
-//        // TODO: Check if already a Manager (use instanceof), throw if so
-//        //       Message: "Employee <id> is already a Manager"
-//        // TODO: Create a new Manager with the same details + teamSize
-//        // TODO: Remove the old employee, add the new Manager
-//        // TODO: Return the new Manager
-//        return null;
-//    }
+    public Manager promoteToManager(int id, int teamSize) {
+        // TODO: Find the employee by ID (throw if not found)
+        Employee e1 = employeeMap.get(id);
+
+        if(e1 == null){
+            throw new IllegalArgumentException("Employee with this "+ id + "not found.");
+        }
+        // TODO: Check if already a Manager (use instanceof), throw if so
+        //       Message: "Employee <id> is already a Manager"
+        if (e1 instanceof Manager){
+            throw new IllegalArgumentException("Employee with this "+ id + "is already a manager.");
+        }
+        // TODO: Create a new Manager with the same details + teamSize
+        Manager newManager = new Manager(
+                e1.getId(),
+                e1.getName(),
+                e1.getDepartment(),
+                e1.getSalary(),
+                teamSize
+        );
+        // TODO: Remove the old employee, add the new Manager
+        removeEmployee(id);
+        addEmployee(newManager);
+        // TODO: Return the new Manager
+        return newManager;
+    }
 }
